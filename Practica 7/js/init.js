@@ -122,7 +122,7 @@ function init() {
 
         var main = document.getElementById("main");
 
-        if(document.getElementById("principal")){
+        if (document.getElementById("principal")) {
             document.getElementById("principal").remove();
         }
 
@@ -1032,6 +1032,7 @@ function init() {
             var categoriaNueva = new Category(categoria);
             store.addCategory(categoriaNueva);
             $("#modalAgregarCat").modal('hide');
+            document.getElementById("agregarCat").addEventListener("click", mostrarCategorias(store));
         }
 
     }
@@ -1041,7 +1042,7 @@ function init() {
             var categoriaBorrar = new Category(categoria);
             store.removeCategory(categoriaBorrar);
             $("#modalAgregarCat").modal('hide');
-            document.getElementById("borrarCat").addEventListener("click",mostrarCategorias(store));
+            document.getElementById("borrarCat").addEventListener("click", mostrarCategorias(store));
         }
     }
 
@@ -1055,7 +1056,7 @@ function init() {
             tienda.images = imagen;
             store.addShop(tienda);
             $("#modalAgregarTienda").modal('hide');
-
+            initPopulate(store);
         }
     }
 
@@ -1090,7 +1091,7 @@ function init() {
 
 
             store.removeShop(tienda);
-            document.getElementById("borrarTienda").addEventListener("click",initPopulate(store));
+            document.getElementById("borrarTienda").addEventListener("click", initPopulate(store));
         }
     }
 
@@ -1148,6 +1149,7 @@ function init() {
 
 
             $("#modalAgregarProducto").modal('hide');
+            document.getElementById("cerrarProdAdd").addEventListener("click",shopPopulate(store, tienda.name));
         }
     }
 
@@ -1155,7 +1157,7 @@ function init() {
     function eliminarProducto(store, producto, tienda) {
         return function () {
             store.removeProductInShop(producto, tienda);
-            document.getElementById("cerrarProd").addEventListener("click",shopPopulate(store,tienda.name));
+            document.getElementById("cerrarProd").addEventListener("click", shopPopulate(store, tienda.name));
             /*
                         console.log(producto);
                         console.log(tienda);
