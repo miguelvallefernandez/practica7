@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Practica 6</title>
+    <link href="css/micss.css" rel="stylesheet">
+    <link href="css/bootstrap.min.css" rel="stylesheet">
+
+</head>
+<body id="init">
+
+<nav id="nav" class="navbar navbar-default">
+    <div id="div-nav" class="container-fluid">
+        <div class="navbar-header">
+            <a class="navbar-brand" href="#init" id="home">Práctica 5</a>
+        </div>
+
+        <div class="collapse navbar-collapse" id="myNavbar">
+
+            <!--
+             <ul class="nav navbar-nav navbar-left">
+                 <li><a href="#init">Eroski</a></li>
+                 <li><a href="#init">Carrefour</a></li>
+                 <li><a href="#init">Cex</a></li>
+             </ul>
+             -->
+
+            <!-- DROPDOWN
+                        <div class="btn-group pull-right">
+                            <button id="categorias" type="button" class="btn btn-danger" data-toggle="dropdown">
+                                <span>Categorias</span>
+                            </button>
+                            <div class="dropdown-menu">
+                                <a class="dropdown-item" href="#">Action</a>
+                                <a class="dropdown-item" href="#">Another action</a>
+                                <a class="dropdown-item" href="#">Something else here</a>
+                            </div>
+                        </div>
+                        -->
+            <div id="acceso-mostrado" class="pull-right">
+                <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#myModal">Acceso</button>
+
+                <div class="modal fade" id="myModal" role="dialog">
+                    <div class="modal-dialog">
+
+                        <!-- Modal content-->
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                <h4 class="modal-title">Acceso a usuario</h4>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <div class="form-group">
+                                        <label for="user">Usuario:</label>
+                                        <input type="text" class="form-control" id="user">
+                                    </div>
+                                    <div class="form-group">
+                                        <label for="passwd">Contraseña:</label>
+                                        <input type="password" class="form-control" id="passwd">
+                                    </div>
+                                </form>
+                                <button class="btn btn-default" id="acceso" onclick="accederUsuario()">Acceder</button>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+            <div id="oculto" class="usuario-oculto pull-right">
+                <div class="colocar">
+                    <p id="nombre-user"></p>
+                    <button type="button" id="cerrar" class="btn btn-danger" onclick="cerrarSesion()">Cerrar
+                        sesion
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<main id="main" class="container">
+
+
+    <div class="modal fade" id="modalAgregarCat" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Agregar categoria</h4>
+                </div>
+                <div class="modal-body" id="body-modal">
+                    <form>
+                        <div class="form-group">
+                            <label for="categoriaName">Nombre: </label>
+                            <input type="text" class="form-control" id="categoriaName">
+                        </div>
+                    </form>
+                    <button class="btn btn-default" id="addCat">Añadir</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="eliminarCat" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Categoria eliminada con éxito</h4>
+                </div>
+                <div class="modal-body">
+                    <p>¡Tu categoría ha sido eliminada!</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" id="borrarCat" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalAgregarTienda" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Agregar tienda</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="form-group">
+                            <label for="cif">CIF: </label>
+                            <input type="text" class="form-control" id="cif">
+                        </div>
+                        <div class="form-group">
+                            <label for="categoriaName">Nombre: </label>
+                            <input type="text" class="form-control" id="shopName">
+                        </div>
+                        <div class="form-group">
+                            <label for="imagenTienda">Imagen: </label>
+                            <input type="text" placeholder="Introduce la ruta completa de la imagen"
+                                   class="form-control" id="imagenTienda">
+                        </div>
+                    </form>
+                    <button class="btn btn-default" id="addShop">Añadir</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="eliminarShop" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Tienda eliminada con éxito</h4>
+                </div>
+                <div class="modal-body">
+                    <p>¡Tu tienda ha sido eliminada!</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" id="borrarTienda" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="eliminarProducto" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Producto eliminado con éxito</h4>
+                </div>
+                <div class="modal-body">
+                    <p>¡Tu producto ha sido eliminado!</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" id="cerrarProd" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal fade" id="modalAgregarProducto" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Agregar producto</h4>
+                </div>
+                <div class="modal-body">
+                    <form>
+                        <div class="tipos form-group">
+                            <label for="tipo">Tipo: </label>
+                            <select class="form-control" id="tipo">
+                                <option value="dvd">DVD</option>
+                                <option value="smartphone">Smartphone</option>
+                                <option value="tv">TV</option>
+                            </select>
+                            <button class="btn btn-default" id="tipoProd">Ok</button>
+                        </div>
+                        <div class="form-group">
+                            <label for="cif">Serial: </label>
+                            <input type="text" class="form-control" id="serial">
+                        </div>
+                        <div class="form-group">
+                            <label for="productName">Nombre: </label>
+                            <input type="text" class="form-control" id="productName">
+                        </div>
+                        <div class="form-group">
+                            <label for="precio">Precio: </label>
+                            <input type="text" class="form-control" id="precio">
+                        </div>
+                        <div id="tipos">
+
+                            <div id="tipodvd" class="tipo-dvd">
+
+                                <div class="form-group">
+                                    <label for="titulo">Titulo: </label>
+                                    <input type="text" class="form-control" id="titulo">
+                                </div>
+                                <div class="form-group">
+                                    <label for="autor">Autor: </label>
+                                    <input type="text" class="form-control" id="autor">
+                                </div>
+
+
+                            </div>
+                            <div id="tipotv" class="tipo-smartphone-tv">
+                                <div class="form-group">
+                                    <label for="modelo">Modelo: </label>
+                                    <input type="text" class="form-control" id="modelo">
+                                </div>
+                            </div>
+
+                        </div>
+                        <div class="form-group">
+                            <label for="imagenTienda">Imagen: </label>
+                            <input type="text" placeholder="Introduce la ruta completa de la imagen"
+                                   class="form-control" id="imagenProducto">
+                        </div>
+                        <div class="form-group">
+                            <label for="stockp">Stock: </label>
+                            <input type="text" class="form-control" id="stockp">
+                        </div>
+                    </form>
+                    <button class="btn btn-default" id="addPro">Añadir</button>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cerrar</button>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!--
+    <div id="title">
+        <h3>DESCRIPCION PRODUCTO</h3>
+    </div>
+    <div class="producto row" id="principal">
+
+        <div class="col-md-2">
+            <h4>DVD Fast & Furious 7</h4>
+            <img src="images/productos/fastfurious.jpg" class="img-responsive">
+        </div>
+        <div class="descripcion col-md-10">
+            <p> Película de acción estadounidense de 2015 dirigida por James Wan y protagonizada por Vin Diesel, Paul
+                Walker, Dwayne Johnson, Michelle Rodríguez, Jordana Brewster, Tyrese Gibson, Ludacris y Jason Statham.
+                Es el séptimo film de la saga The Fast and the Furious y también la secuela paralela de la película Fast
+                & Furious 6 y de su spin-off The Fast and the Furious: Tokyo Drift.</p>
+            <h1 id="stock" class="pull-right">Stock: 16</h1>
+        </div>
+
+    </div>
+
+    </div>
+-->
+    <!--
+        <div class="principal row">
+
+            <div class="div-Centro col-md-3">
+                <div class="panel-body">
+                    <img src="images/default.jpg" class="img-responsive">
+                </div>
+                <div class="panel-footer">
+                    <a href="#">Default</a>
+                </div>
+            </div>
+
+            <div class="div-Centro col-md-3">
+                <div class="panel-body">
+                    <img src="images/eroski.png" class="img-responsive">
+                </div>
+                <div class="panel-footer">
+                    <a href="#">Eroski</a>
+                </div>
+            </div>
+
+            <div class="div-Centro col-md-3">
+                <div class="panel-body">
+                    <img src="images/carrefour.png" class="img-responsive">
+                </div>
+                <div class="panel-footer">
+                    <a href="#">Carrefour</a>
+                </div>
+            </div>
+
+            <div class="div-Centro col-md-3">
+                <div class="panel-body">
+                    <img src="images/cex.png" class="img-responsive">
+                </div>
+                <div class="panel-footer">
+                    <a href="#">Cex</a>
+                </div>
+            </div>
+
+        </div>
+    -->
+</main>
+
+
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+
+<script src="js/bootstrap.min.js"></script>
+
+<script type="text/javascript" src="js/BaseException.js"></script>
+<script type="text/javascript" src="js/Productos.js"></script>
+<script type="text/javascript" src="js/StoreHouse.js"></script>
+<!--<script type="text/javascript" src="js/test.js"></script>-->
+<script type="text/javascript" src="js/init.js"></script>
+<script type="text/javascript" src="js/formularios.js"></script>
+
+</body>
+</html>
