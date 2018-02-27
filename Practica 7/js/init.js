@@ -429,6 +429,27 @@ function init() {
                                 divAgregar.appendChild(agregarNueva);
                                 navBar.appendChild(divAgregar);
 
+
+                                var div = document.getElementById("cats");
+                                var select = document.createElement("select");
+                                select.setAttribute("class", "form-control");
+                                select.setAttribute("id", "categories");
+
+                                var categories = store.categorias;
+                                var category = categories.next();
+                                while (category.done !== true) {
+
+                                    var option = document.createElement("option");
+                                    option.setAttribute("value", category.value.title);
+                                    var texto = document.createTextNode(category.value.title);
+                                    option.appendChild(texto);
+                                    select.appendChild(option);
+
+                                    category = categories.next();
+                                }
+                                div.appendChild(select);
+
+
                                 document.getElementById("addPro").addEventListener("click", agregarProducto(store, shop.value));
 
                             }
@@ -1118,6 +1139,8 @@ function init() {
             var precio = document.getElementById("precio").value;
             var imagen = document.getElementById("imagenProducto").value;
 
+            var categoria=new Category(document.getElementById("categories").value);
+
 
             if (document.getElementById("tipo").value == "dvd") {
 
@@ -1146,10 +1169,12 @@ function init() {
             var stock = document.getElementById("stockp").value;
 
             store.addProductInShop(producto, tienda, stock);
+            store.addProduct(producto,categoria);
+
 
 
             $("#modalAgregarProducto").modal('hide');
-            document.getElementById("cerrarProdAdd").addEventListener("click",shopPopulate(store, tienda.name));
+            document.getElementById("cerrarProdAdd").addEventListener("click", shopPopulate(store, tienda.name));
         }
     }
 
