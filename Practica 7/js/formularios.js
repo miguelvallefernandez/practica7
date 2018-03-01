@@ -2,7 +2,7 @@ var logon = false; //Se pondrá true cuando el usuario haya accedido correctamen
 
 //Crear cookie
 
-if (checkCookie("prueba","prueba")) {
+if (checkCookie("prueba", "prueba")) {
 
 
     document.getElementById('acceso-mostrado').style.display = "none";
@@ -66,7 +66,6 @@ function accederUsuario() {
 
     document.cookie = "prueba=prueba; expires= 31 Dec 2019 12:00:00 UTC";
 
-
     var user = document.getElementById("user").value;
     var passwd = document.getElementById("passwd").value;
     var log = checkCookie(user, passwd);
@@ -92,11 +91,9 @@ function accederUsuario() {
         alert("Usuario invalido");
     }
 
-
 }
 
 function cerrarSesion() {
-
     var nombreuser = document.getElementById("nombre-user");
     var user = nombreuser.textContent;
     document.cookie = user + "=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/";

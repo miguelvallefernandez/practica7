@@ -90,9 +90,11 @@ function init() {
     shopMenusPopulate(store);
     // console.log(showProductCategoryShop(store, "Eroski", "Peliculas"));
 
+
     globalProductPopulate(store);
 
     var home = document.getElementById("home");
+
 
     function homeEvent(store) {
         return function () {
@@ -163,7 +165,9 @@ function init() {
             div1.appendChild(div1panelf);
             var enlace1 = document.createElement("a");
             enlace1.setAttribute("href", "#");
-
+            if (shop.value.description) {
+                enlace1.setAttribute("title", shop.value.description);
+            }
             enlace1.setAttribute("id", "btnTiendaPrincipal" + count++);
 
             var textoEnlace1 = document.createTextNode(shop.value.name);
@@ -177,7 +181,9 @@ function init() {
                     var btn1 = document.createElement("button");
                     btn1.setAttribute("class", "btn btn-success");
                     btn1.setAttribute("id", "editar" + shop.value.name);
-
+                    btn1.setAttribute("data-target", "#modalModificarTienda");
+                    btn1.setAttribute("data-toggle", "modal");
+                    btn1.addEventListener("click", rellenarForm(shop.value));
                     var span = document.createElement("span");
                     span.setAttribute("class", "glyphicon glyphicon-pencil");
                     btn1.appendChild(span);
@@ -393,7 +399,9 @@ function init() {
                             var btn1 = document.createElement("button");
                             btn1.setAttribute("class", "btn btn-success");
                             btn1.setAttribute("id", "editar" + shops.value.product.name);
-
+                            btn1.setAttribute("data-target", "#modificarStock");
+                            btn1.setAttribute("data-toggle", "modal");
+                            btn1.addEventListener("click", rellenarFormStock(shops));
                             var spann = document.createElement("span");
                             spann.setAttribute("class", "glyphicon glyphicon-pencil");
                             btn1.appendChild(spann);
@@ -728,6 +736,7 @@ function init() {
                         stock.setAttribute("id", "stock");
                         stock.setAttribute("class", "pull-right");
                         var textStock = document.createTextNode("Stock: " + shop.value.stock);
+                        console.log(shop.value.stock);
                         stock.appendChild(textStock);
 
                         divDescripcion.appendChild(p);
@@ -980,17 +989,28 @@ function init() {
                 panelb.appendChild(img);
                 var panelf = document.createElement("div");
                 panelf.setAttribute("class", "panel-footer");
+                panelf.setAttribute("id", "panel" + category.value.title);
                 var a = document.createElement("a");
                 a.setAttribute("href", "#");
+                a.setAttribute("id", "ponerInput" + category.value.title);
+                a.addEventListener("click", productCategory(store, category.value));
                 var txt = document.createTextNode(category.value.title);
                 a.appendChild(txt);
                 panelf.appendChild(a);
                 if (category.value.title != "Anonymous category") {
                     if (checkCookie("prueba", "prueba")) {
                         var divButtons = document.createElement("div");
+                        divButtons.setAttribute("id", "divBttn" + category.value.title);
                         var btn1 = document.createElement("button");
                         btn1.setAttribute("class", "btn btn-success");
                         btn1.setAttribute("id", "editar" + category.value.title);
+                        //btn1.setAttribute("data-target", "#modalModificarCat");
+                        // btn1.setAttribute("data-toggle", "modal");
+                        //document.getElementById("mdfCat").addEventListener("click",modificarCategoria(store,category.value));
+                        // document.getElementById("mdfCat").setAttribute("id","mdfCat"+category.value.title);
+
+
+                        btn1.addEventListener("click", modify(category.value.title, category.value));
 
                         var span = document.createElement("span");
                         span.setAttribute("class", "glyphicon glyphicon-pencil");
@@ -1014,7 +1034,6 @@ function init() {
                 div.appendChild(panelb);
                 div.appendChild(panelf);
                 divPrincipal.appendChild(div);
-
                 category = categories.next();
             }
 
@@ -1033,7 +1052,6 @@ function init() {
                 divAgregar.appendChild(agregarNueva);
                 main.appendChild(divAgregar);
 
-
                 document.getElementById("addCat").addEventListener("click", agregarCategoria(store));
             }
             /*
@@ -1046,6 +1064,86 @@ function init() {
 
     }
 
+    function productCategory(store, categoria) {
+        return function () {
+
+            if (document.getElementById("cerrarVentana")) {
+                document.getElementById("cerrarVentana").remove();
+            }
+            if (document.getElementById("agregar")) {
+                document.getElementById("agregar").remove();
+            }
+
+            document.getElementById("principal").remove();
+
+            var divPrincipal = document.createElement("div");
+            divPrincipal.setAttribute("class", "principal row");
+            divPrincipal.setAttribute("id", "principal");
+            document.getElementById("main").appendChild(divPrincipal);
+
+
+            var productos = store.getCategoryProducts(categoria);
+            var product = productos.next();
+            while (product.done !== true) {
+                //console.log("Producto: " + product.value.name + " (" + product.value.serial + ")");
+
+
+                var div1 = document.createElement("div");
+                div1.setAttribute("class", "div-Centro col-md-3");
+                divPrincipal.appendChild(div1);
+                var div1panel = document.createElement("div");
+                div1panel.setAttribute("class", "panel-body");
+                div1.appendChild(div1panel);
+                var imagen1 = document.createElement("img");
+                imagen1.setAttribute("src", product.value.images);
+                imagen1.setAttribute("class", "img-responsive");
+                div1panel.appendChild(imagen1);
+                var div1panelf = document.createElement("div");
+                div1panelf.setAttribute("class", "panel-footer");
+                div1.appendChild(div1panelf);
+                var enlace1 = document.createElement("p");
+                var textoEnlace1 = document.createTextNode(product.value.name);
+                //  enlace1.setAttribute("name", shop.value.product.name);
+                enlace1.appendChild(textoEnlace1);
+                div1panelf.appendChild(enlace1);
+
+
+                product = productos.next();
+            }
+
+        }
+    }
+
+
+    function modify(categoria, category) {
+        return function () {
+            document.getElementById("ponerInput" + categoria).style.display = "none";
+            var input = document.createElement("input");
+            input.setAttribute("type", "text");
+            input.setAttribute("class", "form-control");
+            input.setAttribute("id", "textoCategoria" + categoria);
+            input.setAttribute("value", categoria);
+            document.getElementById("panel" + categoria).appendChild(input);
+            document.getElementById("editar" + categoria).style.display = "none";
+
+
+            var btn1 = document.createElement("button");
+            btn1.setAttribute("class", "btn btn-success");
+            var span = document.createElement("span");
+            span.setAttribute("class", "glyphicon glyphicon-ok");
+            btn1.setAttribute("id", "aceptarmodificar" + categoria);
+            btn1.appendChild(span);
+            document.getElementById("divBttn" + categoria).appendChild(btn1);
+
+            btn1.setAttribute("data-target", "#modifyCategory");
+            btn1.setAttribute("data-toggle", "modal");
+
+            document.getElementById("cerrarMdfCat").addEventListener("click", mostrarCategorias(store));
+
+            btn1.addEventListener("click", modificarCategoria(store, categoria, category));
+
+        }
+    }
 
     function agregarCategoria(store) {
         return function () {
@@ -1066,6 +1164,29 @@ function init() {
             document.getElementById("borrarCat").addEventListener("click", mostrarCategorias(store));
         }
     }
+
+
+    function modificarCategoria(store, categoria, category) {
+
+        return function () {
+
+
+            //  var category = new Category(categoria);
+
+            console.log(category);
+
+            var nuevoNombre = document.getElementById("textoCategoria" + categoria).value;
+
+            category.title = nuevoNombre;
+        }
+        // $("#modalModificarCat").modal('hide');
+
+
+        //  document.getElementById("cerrarMdfCat").addEventListener("click", mostrarCategorias(store));
+
+
+    }
+
 
     function agregarTienda(store) {
         return function () {
@@ -1139,7 +1260,7 @@ function init() {
             var precio = document.getElementById("precio").value;
             var imagen = document.getElementById("imagenProducto").value;
 
-            var categoria=new Category(document.getElementById("categories").value);
+            var categoria = new Category(document.getElementById("categories").value);
 
 
             if (document.getElementById("tipo").value == "dvd") {
@@ -1169,8 +1290,7 @@ function init() {
             var stock = document.getElementById("stockp").value;
 
             store.addProductInShop(producto, tienda, stock);
-            store.addProduct(producto,categoria);
-
+            store.addProduct(producto, categoria);
 
 
             $("#modalAgregarProducto").modal('hide');
@@ -1183,10 +1303,89 @@ function init() {
         return function () {
             store.removeProductInShop(producto, tienda);
             document.getElementById("cerrarProd").addEventListener("click", shopPopulate(store, tienda.name));
+
             /*
                         console.log(producto);
                         console.log(tienda);
                         */
+        }
+    }
+
+
+    function rellenarForm(tienda) {
+        return function () {
+
+            document.getElementById("resetear").reset();
+
+            if (document.getElementById("ponerBoton").getElementsByTagName("button")[0]) {
+                document.getElementById("ponerBoton").getElementsByTagName("button")[0].remove();
+            }
+
+            document.getElementById("cifMdf").setAttribute("value", tienda.cif);
+            document.getElementById("cifMdf").disabled = true;
+            document.getElementById("shopNameMdf").setAttribute("value", tienda.name);
+            document.getElementById("descripcion").setAttribute("value", tienda.description);
+            document.getElementById("imagenTiendaMdf").setAttribute("value", tienda.images);
+            var button = document.createElement("button");
+            button.setAttribute("class", "btn btn-default");
+            button.setAttribute("id", "shopMdf" + tienda.name);
+            button.setAttribute("data-target", "#tiendaModificada");
+            button.setAttribute("data-toggle", "modal");
+            button.appendChild(document.createTextNode("Modificar"));
+            document.getElementById("ponerBoton").appendChild(button);
+            button.addEventListener("click", modificarTienda(tienda));
+
+        }
+    }
+
+    function modificarTienda(tienda) {
+        return function () {
+
+            tienda.name = document.getElementById("shopNameMdf").value;
+            tienda.description = document.getElementById("descripcion").value;
+            tienda.images[0] = document.getElementById("imagenTiendaMdf").value;
+            $("#modalModificarTienda").modal('hide');
+            document.getElementById("cerrarMdfShop").addEventListener("click", homeEvent(store));
+        }
+    }
+
+    function rellenarFormStock(tienda) {
+        return function () {
+
+            document.getElementById("reset").reset();
+
+            if (document.getElementById("ponerBtn").getElementsByTagName("button")[0]) {
+                document.getElementById("ponerBtn").getElementsByTagName("button")[0].remove();
+
+
+            }
+
+            document.getElementById("productsName").setAttribute("value", tienda.value.product.name);
+            document.getElementById("productsName").disabled = true;
+            document.getElementById("pstock").setAttribute("value", tienda.value.stock);
+
+            var button = document.createElement("button");
+            button.setAttribute("class", "btn btn-default");
+            button.setAttribute("id", "stockMdf" + tienda.value.product.name);
+            button.setAttribute("data-target", "#stockMod");
+            button.setAttribute("data-toggle", "modal");
+            button.appendChild(document.createTextNode("Modificar stock"));
+            document.getElementById("ponerBtn").appendChild(button);
+            button.addEventListener("click", modificarStock(tienda.value));
+
+
+        }
+    }
+
+    function modificarStock(tienda) {
+        return function () {
+
+            tienda.stock = document.getElementById("pstock").value;
+
+            console.log(tienda);
+
+            $("#modificarStock").modal('hide');
+            document.getElementById("cerrarStockMod").addEventListener("click", homeEvent(store));
         }
     }
 
